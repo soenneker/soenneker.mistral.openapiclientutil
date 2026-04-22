@@ -1,20 +1,19 @@
 using Soenneker.Mistral.OpenApiClientUtil.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Mistral.OpenApiClientUtil.Tests;
 
-[Collection("Collection")]
-public sealed class MistralOpenApiClientUtilTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public sealed class MistralOpenApiClientUtilTests : HostedUnitTest
 {
     private readonly IMistralOpenApiClientUtil _openapiclientutil;
 
-    public MistralOpenApiClientUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public MistralOpenApiClientUtilTests(Host host) : base(host)
     {
         _openapiclientutil = Resolve<IMistralOpenApiClientUtil>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
