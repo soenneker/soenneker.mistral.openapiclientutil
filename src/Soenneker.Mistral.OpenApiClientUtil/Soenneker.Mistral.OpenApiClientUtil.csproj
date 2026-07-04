@@ -42,7 +42,7 @@
 
     <ItemGroup>
         <PackageReference Include="Soenneker.Kiota.GenericAuthenticationProvider" Version="4.0.35" />
-        <PackageReference Include="Soenneker.Mistral.HttpClients" Version="4.0.42" />
+        <PackageReference Include="Soenneker.Mistral.HttpClients" Version="4.0.44" />
         <PackageReference Include="Soenneker.Mistral.OpenApiClient" Version="4.0.37" />
         <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.804" />
     </ItemGroup>
