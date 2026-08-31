@@ -1,35 +1,27 @@
-using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
-using Soenneker.Extensions.Configuration;
 using Soenneker.Extensions.ValueTask;
 using Soenneker.Mistral.HttpClients.Abstract;
 using Soenneker.Mistral.OpenApiClientUtil.Abstract;
 using Soenneker.Mistral.OpenApiClient;
-using Soenneker.Kiota.GenericAuthenticationProvider;
 using Soenneker.Utils.AsyncSingleton;
 
 namespace Soenneker.Mistral.OpenApiClientUtil;
 
-///<inheritdoc cref="IMistralOpenApiClientUtil"/>
 public sealed class MistralOpenApiClientUtil : IMistralOpenApiClientUtil
 {
     private readonly AsyncSingleton<MistralOpenApiClient> _client;
 
-    public MistralOpenApiClientUtil(IMistralOpenApiHttpClient httpClientUtil, IConfiguration configuration)
+    public MistralOpenApiClientUtil(IMistralOpenApiHttpClient httpClientUtil)
     {
         _client = new AsyncSingleton<MistralOpenApiClient>(async token =>
         {
             HttpClient httpClient = await httpClientUtil.Get(token).NoSync();
 
-            var apiKey = configuration.GetValueStrict<string>("Mistral:ApiKey");
-            string authHeaderValueTemplate = configuration["Mistral:AuthHeaderValueTemplate"] ?? "{token}";
-            string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
-
-            var requestAdapter = new HttpClientRequestAdapter(new GenericAuthenticationProvider(headerValue: authHeaderValue), httpClient: httpClient);
+            var requestAdapter = new HttpClientRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: httpClient);
 
             return new MistralOpenApiClient(requestAdapter);
         });
@@ -40,18 +32,11 @@ public sealed class MistralOpenApiClientUtil : IMistralOpenApiClientUtil
         return _client.Get(cancellationToken);
     }
 
-    /// <summary>
-    /// Releases resources used by the current instance.
-    /// </summary>
     public void Dispose()
     {
         _client.Dispose();
     }
 
-    /// <summary>
-    /// Asynchronously releases resources used by the current instance.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync()
     {
         return _client.DisposeAsync();
