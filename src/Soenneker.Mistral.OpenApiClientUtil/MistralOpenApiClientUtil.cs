@@ -11,6 +11,7 @@ using Soenneker.Utils.AsyncSingleton;
 
 namespace Soenneker.Mistral.OpenApiClientUtil;
 
+/// <inheritdoc cref="IMistralOpenApiClientUtil" />
 public sealed class MistralOpenApiClientUtil : IMistralOpenApiClientUtil
 {
     private readonly AsyncSingleton<MistralOpenApiClient> _client;
