@@ -45,6 +45,6 @@
 
     <ItemGroup>
         <PackageReference Include="Soenneker.Mistral.HttpClients" Version="11.0.157" />
-        <PackageReference Include="Soenneker.Mistral.OpenApiClient" Version="11.0.72" />
+        <PackageReference Include="Soenneker.Mistral.OpenApiClient" Version="11.0.73" />
     </ItemGroup>
 </Project>
